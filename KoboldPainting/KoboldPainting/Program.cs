@@ -1,4 +1,5 @@
 using KoboldPainting.Data;
+using KoboldPainting.Models;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 

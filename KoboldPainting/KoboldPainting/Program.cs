@@ -1,5 +1,7 @@
 using KoboldPainting.Data;
+using KoboldPainting.Data.SeedingUsers;
 using KoboldPainting.Models;
+using KoboldPainting.Utilities;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,6 +23,24 @@ builder.Services.AddDbContext<KoboldPaintingIdentityDbContext>(options => option
     .UseSqlServer(identityConnectionString));
 
 var app = builder.Build();
+
+// ! Seed users
+// ! turn off for azure
+using (var scope = app.Services.CreateScope())
+{
+   var services = scope.ServiceProvider;
+   try
+   {
+       //This only works locally not on azure
+       string testUserPW = builder.Configuration["KoboldPainting:SeededUserPW"];
+       SeedUsers.Initialize(services, SeedData.UserSeedData, testUserPW).Wait();
+   }
+   catch (Exception e)
+   {
+       Console.WriteLine(e);
+       throw new Exception("Couldn't seed users.");
+   }
+}
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

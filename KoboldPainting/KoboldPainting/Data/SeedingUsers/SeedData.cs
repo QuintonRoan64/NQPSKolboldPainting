@@ -13,8 +13,8 @@ public class UserInfoData
     public string Email { get; set; }
     public string FirstName { get; set; }
     public string LastName { get; set; }
-    public List<PaintRecipe> UserPaintRecipes { get; set; } = new List<PaintRecipe>() 
-    { 
+    public List<PaintRecipe> UserPaintRecipes { get; set; } = new List<PaintRecipe>()
+    {
         // new PaintRecipe
         // {
         //     RecipeName = "Test Recipe",
@@ -66,7 +66,14 @@ public class SeedData
     /// </summary>
     public static readonly UserInfoData[] UserSeedData = new UserInfoData[]
     {
-            new UserInfoData { Email = "knott@example.com", FirstName = "Talia", LastName = "Knott"},
+            new UserInfoData { Email = "knott@example.com", FirstName = "Talia", LastName = "Knott"//,
+                            //    UserOwnedPaints = new List<OwnedPaint> { new OwnedPaint { KolboldUserId = 1 } },
+                            //    UserPaintRecipes = new List<PaintRecipe> { new PaintRecipe { KolboldUserId = 1 } },
+                            //    UserWantedPaints = new List<WantedPaint> { new WantedPaint { KolboldUserId = 1 } },
+                            //    UserRefillPaints = new List<RefillPaint> { new RefillPaint { KolboldUserId = 1 } },
+                            //    UserTutorials = new List<Tutorial> { new Tutorial { KolboldUserId = 1 } }
+
+            },
             new UserInfoData { Email = "clark@example.com", FirstName = "Zayden", LastName = "Clark" },
             new UserInfoData { Email = "hareem@example.com", FirstName = "Hareem", LastName = "Davila" },
             new UserInfoData { Email = "krzysztof@example.com", FirstName = "Krzysztof", LastName = "Ponce" }

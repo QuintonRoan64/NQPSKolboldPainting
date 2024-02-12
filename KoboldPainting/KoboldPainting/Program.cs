@@ -1,3 +1,4 @@
+using KoboldPainting.Areas.Identity.Data;
 using KoboldPainting.Data;
 using KoboldPainting.Data.SeedingUsers;
 using KoboldPainting.Models;
@@ -13,7 +14,7 @@ builder.Services.AddDbContext<KoboldPaintingDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<KoboldPaintingIdentityDbContext>();
 builder.Services.AddControllersWithViews();
 

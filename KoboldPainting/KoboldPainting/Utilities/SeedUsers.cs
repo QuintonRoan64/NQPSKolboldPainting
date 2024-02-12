@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using KoboldPainting.Data.SeedingUsers;
 using KoboldPainting.Models;
+using KoboldPainting.Areas.Identity.Data;
 // using KoboldPainting.Areas.Identity.Data;
 
 
@@ -28,44 +29,67 @@ public class SeedUsers
             using (var context = new KoboldPaintingDbContext(serviceProvider.GetRequiredService<DbContextOptions<KoboldPaintingDbContext>>()))
             {
                 // Get the Identity user manager
-                var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+                var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
                 foreach (var u in seedData)
                 {
                     // Ensure this user exists or is newly created (Email is used for username since that is the default in Register and Login -- change those and then use username here if you want it different than email
-                    var identityID = await EnsureUser(userManager, testUserPw, u.Email, u.Email, true);
+                    var identityID = await EnsureUser(userManager, testUserPw, u.Email, u.Email, true, u.FirstName, u.LastName);
                     // Create a new Person if this one doesn't already exist
-                    KolboldUser kolboldUser = new KolboldUser
+                    KoboldUser kolboldUser = new KoboldUser
                     {
-                        AspNetUserId = identityID, 
+                        AspNetUserId = identityID,
                         FirstName = u.FirstName,
                         LastName = u.LastName,
-                        };
-                    bool checkIfKoboldUserExists = context.KolboldUsers.Any(x => x.AspNetUserId == identityID);
+                    };
+
+                    bool checkIfKoboldUserExists = context.KoboldUsers.Any(x => x.AspNetUserId == identityID);
                     if (!checkIfKoboldUserExists)
                     {
                         // Doesn't already exist, so add a new user
                         context.Add(kolboldUser);
-                        await context.SaveChangesAsync();
-                        // // ! add lists for person on creation
-                        // foreach (var list in u.\)
+                        var koboldUserPaintRecipes = new PaintRecipe()
+                        {
+                            KoboldUserId = kolboldUser.Id,
+                            KoboldUser = kolboldUser,
+                            RecipeName = u.FirstName + " " + u.LastName +  " Test Recipe",
+                            Description = "Test Description",
+                        };
+                        context.Add(koboldUserPaintRecipes);
+
+                        //! Causes error
+                        // ! "Unable to track an instance of type 'WantedPaint' because it does not have a primary key. Only entity types with a primary key may be tracked."
+                        // var koboldUserWantedPaint = new WantedPaint()
                         // {
-                        //     list.Person = person;
-                        //     list.PersonId = person.Id;
-                        //     context.Add(list);
-                        //     await context.SaveChangesAsync();
-                        // }
-                        //add a save changes here
+                        //     KoboldUserId = kolboldUser.Id,
+                        //     KoboldUser = kolboldUser,
+                        //     PaintId = 1
+                        // };
+                        // context.Add(koboldUserWantedPaint);
+
+                        // var koboldUserOwnedPaint = new OwnedPaint()
+                        // {
+                        //     KoboldUserId = kolboldUser.Id,
+                        //     KoboldUser = kolboldUser
+                        // };
+                        // context.Add(koboldUserOwnedPaint);
+                        // var koboldUserRefillPaint = new RefillPaint()
+                        // {
+                        //     KoboldUserId = kolboldUser.Id,
+                        //     KoboldUser = kolboldUser
+                        // };
+                        // context.Add(koboldUserRefillPaint);
                     }
-                }
+                    await context.SaveChangesAsync();                
             }
+        }
         }
         catch (InvalidOperationException ex)
         {
             // Thrown if there is no service of the type requested from the service provider
             // Catch it (and don't throw the exception below) if you don't want it to fail (5xx status code)
             throw new Exception("Failed to initialize user seed data, service provider did not have the correct service");
-        }
+}
     }
 
     /// <summary>
@@ -78,35 +102,27 @@ public class SeedUsers
     /// <param name="email"></param>
     /// <param name="emailConfirmed"></param>
     /// <returns>The Identity ID of the user</returns>
-    private static async Task<string> EnsureUser(UserManager<IdentityUser> userManager, string password, string username
-                                                , string email, bool emailConfirmed)
+    private static async Task<string> EnsureUser(UserManager<ApplicationUser> userManager, string password, string username
+                                                , string email, bool emailConfirmed, string firstName, string lastName)
+{
+    var user = await userManager.FindByNameAsync(username);
+    if (user == null)
     {
-        var user = await userManager.FindByNameAsync(username);
-        if (user == null)
+        user = new ApplicationUser()
         {
-            user = new IdentityUser()
-            {
-                UserName = username,
-                Email = email,
-                EmailConfirmed = emailConfirmed,
-            };
-            await userManager.CreateAsync(user, password);
-        }
-        // using Microsoft.AspNetCore.Identity;
-
-        // namespace KoboldPainting.Models
-        // {
-        //     public class ApplicationUser : IdentityUser
-        //     {
-        //         public string FirstName { get; set; }
-        //     }
-        // }
-
-        if (user == null)
-        {
-            throw new Exception("The password is probably not strong enough!");
-        }
-
-        return user.Id;
+            UserName = username,
+            Email = email,
+            EmailConfirmed = emailConfirmed,
+            FirstName = firstName,
+            LastName = lastName
+        };
+        await userManager.CreateAsync(user, password);
     }
+    if (user == null)
+    {
+        throw new Exception("The password is probably not strong enough!");
+    }
+
+    return user.Id;
+}
 }

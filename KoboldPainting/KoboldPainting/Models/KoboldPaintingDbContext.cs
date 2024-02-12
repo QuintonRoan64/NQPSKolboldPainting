@@ -17,7 +17,7 @@ public partial class KoboldPaintingDbContext : DbContext
 
     public virtual DbSet<Company> Companies { get; set; }
 
-    public virtual DbSet<KolboldUser> KolboldUsers { get; set; }
+    public virtual DbSet<KoboldUser> KoboldUsers { get; set; }
 
     public virtual DbSet<OwnedPaint> OwnedPaints { get; set; }
 
@@ -42,24 +42,24 @@ public partial class KoboldPaintingDbContext : DbContext
     {
         modelBuilder.Entity<Company>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Company__3214EC27FBECD5AB");
+            entity.HasKey(e => e.Id).HasName("PK__Company__3214EC276FF534BB");
         });
 
-        modelBuilder.Entity<KolboldUser>(entity =>
+        modelBuilder.Entity<KoboldUser>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__KolboldU__3214EC0775CE6BD8");
+            entity.HasKey(e => e.Id).HasName("PK__KoboldUs__3214EC07D4EF54E2");
         });
 
         modelBuilder.Entity<OwnedPaint>(entity =>
         {
-            entity.HasOne(d => d.KolboldUser).WithMany().HasConstraintName("OwnedPaint_FK_KolboldUserID");
+            entity.HasOne(d => d.KoboldUser).WithMany().HasConstraintName("OwnedPaint_FK_KoboldUserID");
 
             entity.HasOne(d => d.Paint).WithMany().HasConstraintName("OwnedPaint_FK_PaintID");
         });
 
         modelBuilder.Entity<Paint>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__Paints__3214EC27E38927AA");
+            entity.HasKey(e => e.Id).HasName("PK__Paints__3214EC2708F79476");
 
             entity.HasOne(d => d.Company).WithMany(p => p.Paints).HasConstraintName("Paints_FK_CompanyID");
 
@@ -68,14 +68,14 @@ public partial class KoboldPaintingDbContext : DbContext
 
         modelBuilder.Entity<PaintRecipe>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaintRec__3214EC27A59E5CD4");
+            entity.HasKey(e => e.Id).HasName("PK__PaintRec__3214EC27F580327F");
 
-            entity.HasOne(d => d.KolboldUser).WithMany(p => p.PaintRecipes).HasConstraintName("PaintRecipes_FK_KolboldUserID");
+            entity.HasOne(d => d.KoboldUser).WithMany(p => p.PaintRecipes).HasConstraintName("PaintRecipes_FK_KoboldUserID");
         });
 
         modelBuilder.Entity<PaintType>(entity =>
         {
-            entity.HasKey(e => e.Id).HasName("PK__PaintTyp__3214EC27F1D59609");
+            entity.HasKey(e => e.Id).HasName("PK__PaintTyp__3214EC27FA8D3D17");
         });
 
         modelBuilder.Entity<PaintsForRecipe>(entity =>
@@ -87,19 +87,19 @@ public partial class KoboldPaintingDbContext : DbContext
 
         modelBuilder.Entity<RefillPaint>(entity =>
         {
-            entity.HasOne(d => d.KolboldUser).WithMany().HasConstraintName("RefillPaint_FK_KolboldUserID");
+            entity.HasOne(d => d.KoboldUser).WithMany().HasConstraintName("RefillPaint_FK_KoboldUserID");
 
             entity.HasOne(d => d.Paint).WithMany().HasConstraintName("RefillPaint_FK_PaintID");
         });
 
         modelBuilder.Entity<Tutorial>(entity =>
         {
-            entity.HasOne(d => d.KolboldUser).WithMany().HasConstraintName("Tutorials_FK_KolboldUserID");
+            entity.HasOne(d => d.KoboldUser).WithMany().HasConstraintName("Tutorials_FK_KoboldUserID");
         });
 
         modelBuilder.Entity<WantedPaint>(entity =>
         {
-            entity.HasOne(d => d.KolboldUser).WithMany().HasConstraintName("WantedPaint_FK_KolboldUserID");
+            entity.HasOne(d => d.KoboldUser).WithMany().HasConstraintName("WantedPaint_FK_KoboldUserID");
 
             entity.HasOne(d => d.Paint).WithMany().HasConstraintName("WantedPaint_FK_PaintID");
         });

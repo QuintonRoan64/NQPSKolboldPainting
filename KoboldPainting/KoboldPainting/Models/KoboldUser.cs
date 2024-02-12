@@ -6,8 +6,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace KoboldPainting.Models;
 
-[Table("KolboldUser")]
-public partial class KolboldUser
+[Table("KoboldUser")]
+public partial class KoboldUser
 {
     [Key]
     public int Id { get; set; }
@@ -22,6 +22,6 @@ public partial class KolboldUser
     [StringLength(64)]
     public string? LastName { get; set; }
 
-    [InverseProperty("KolboldUser")]
+    [InverseProperty("KoboldUser")]
     public virtual ICollection<PaintRecipe> PaintRecipes { get; set; } = new List<PaintRecipe>();
 }

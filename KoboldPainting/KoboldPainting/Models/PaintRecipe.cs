@@ -12,15 +12,15 @@ public partial class PaintRecipe
     [Column("ID")]
     public int Id { get; set; }
 
-    [Column("KolboldUserID")]
-    public int? KolboldUserId { get; set; }
+    [Column("KoboldUserID")]
+    public int? KoboldUserId { get; set; }
 
     [StringLength(50)]
     public string? RecipeName { get; set; }
 
     public string? Description { get; set; }
 
-    [ForeignKey("KolboldUserId")]
+    [ForeignKey("KoboldUserId")]
     [InverseProperty("PaintRecipes")]
-    public virtual KolboldUser? KolboldUser { get; set; }
+    public virtual KoboldUser? KoboldUser { get; set; }
 }

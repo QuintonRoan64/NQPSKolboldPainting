@@ -10,14 +10,14 @@ namespace KoboldPainting.Models;
 [Table("OwnedPaint")]
 public partial class OwnedPaint
 {
-    [Column("KolboldUserID")]
-    public int? KolboldUserId { get; set; }
+    [Column("KoboldUserID")]
+    public int? KoboldUserId { get; set; }
 
     [Column("PaintID")]
     public int? PaintId { get; set; }
 
-    [ForeignKey("KolboldUserId")]
-    public virtual KolboldUser? KolboldUser { get; set; }
+    [ForeignKey("KoboldUserId")]
+    public virtual KoboldUser? KoboldUser { get; set; }
 
     [ForeignKey("PaintId")]
     public virtual Paint? Paint { get; set; }

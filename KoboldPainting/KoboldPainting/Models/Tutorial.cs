@@ -9,12 +9,12 @@ namespace KoboldPainting.Models;
 [Keyless]
 public partial class Tutorial
 {
-    [Column("KolboldUserID")]
-    public int? KolboldUserId { get; set; }
+    [Column("KoboldUserID")]
+    public int? KoboldUserId { get; set; }
 
     [StringLength(500)]
     public string? VideoUrl { get; set; }
 
-    [ForeignKey("KolboldUserId")]
-    public virtual KolboldUser? KolboldUser { get; set; }
+    [ForeignKey("KoboldUserId")]
+    public virtual KoboldUser? KoboldUser { get; set; }
 }

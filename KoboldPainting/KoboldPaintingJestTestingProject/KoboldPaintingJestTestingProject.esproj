@@ -7,4 +7,7 @@
     <!-- Command to run on project clean -->
     <CleanCommand>npm run clean</CleanCommand>
   </PropertyGroup>
+  <ItemGroup>
+    <Folder Include="tests\" />
+  </ItemGroup>
 </Project>
